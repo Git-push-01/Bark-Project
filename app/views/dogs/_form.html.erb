@@ -1,7 +1,10 @@
 <%= simple_form_for @dog do |f| %>
   <%= f.input :name %>
   <%= f.input :description, as: :text %>
-  <%= f.input :image, as: :file %>
+  <%# Add the ability to for a user to input multiple dog images on an edit form or new dog form %>
+  <%#:multiple - If set to true, the user will be allowed to select multiple files. %>
+  <%= f.input :image, as: :file, input_html: { multiple: true }%>
+
 
   <% if @dog.images.any? %>
     <%= image_tag @dog.images.first %>

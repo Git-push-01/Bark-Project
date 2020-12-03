@@ -1,13 +1,30 @@
 <section>
+
   <h2><%= @dog.name %></h2>
 
   <% @dog.images.each do |image| %>
     <%= image_tag url_for(image), alt: "Photo of #{@dog.name}" %>
   <% end %>
+  <%# Allow users to like other dogs (not their own) %>
+<%# used devise method user_signed_in? and current_user to conditinaly render using Ternary  operator  %>
+<% if (user_signed_in? && (current_user.id != @dog.user_id)) %>
+  <%= button_to 'Like', dog_likes_path(@dog), method: :post %>
+  <% end %>
+
+  <p><%= @dog.likes.count %> <%= (@dog.likes.count) == 1 ? 'Like' : 'Likes'%></p>
 
   <p><%= @dog.description %></p>
+  <%# shows email of current user if one is loggedin %>
+  <% if (user_signed_in?) %>
+  <div>Current user... <%= current_user.email %></div>
+  <% else %>
+  <div>No Current User...</div>
+  <% end %>
+  <%# Allow editing only by owner %>
+  <% if (user_signed_in? && (current_user.id == @dog.user_id)) %>
 
-  <%= link_to "Edit #{@dog.name}'s Profile", edit_dog_path %>
-  <br>
-  <%= link_to "Delete #{@dog.name}'s Profile", dog_path, method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to "Edit #{@dog.name}'s Profile", edit_dog_path %>
+        <%= link_to "Delete #{@dog.name}'s Profile", dog_path, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% end %>
+
 </section>

@@ -1,1 +1,5 @@
-<%= render partial: 'thumbnail', collection: @dogs, as: :dog %>
+<%# will_paginate provides API for performing paginated with Active Record %>
+
+<%= will_paginate @dog  %>
+
+ <%= render partial: 'thumbnail', collection: @dogs, as: :dog   %>

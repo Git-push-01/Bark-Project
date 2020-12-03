@@ -1,10 +1,15 @@
 class DogsController < ApplicationController
   before_action :set_dog, only: [:show, :edit, :update, :destroy]
 
+
   # GET /dogs
   # GET /dogs.json
   def index
-    @dogs = Dog.all
+    #@dogs = Dog.all
+
+    # Add pagination to index page, to display 5 dogs per page order page by likes_count will_paginate seems to be interfearing with the likes_count 
+    @dogs = Dog.all.paginate(:page => params[:page], :per_page => 5).order('likes_count DESC')
+
   end
 
   # GET /dogs/1
@@ -25,6 +30,7 @@ class DogsController < ApplicationController
   # POST /dogs.json
   def create
     @dog = Dog.new(dog_params)
+    @dog.user = current_user
 
     respond_to do |format|
       if @dog.save
